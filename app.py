@@ -15,108 +15,118 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ─── TrendVision Style CSS (Light Theme) ───────────────────────────────────
-PURPLE = "#7C3AED"
-PURPLE_LIGHT = "#EDE9FE"
-PURPLE_MID = "#A78BFA"
-BLUE = "#3B82F6"
-GREEN = "#10B981"
-RED = "#EF4444"
-AMBER = "#F59E0B"
-GRAY_50 = "#F9FAFB"
-GRAY_100 = "#F3F4F6"
-GRAY_200 = "#E5E7EB"
-GRAY_300 = "#D1D5DB"
-GRAY_500 = "#6B7280"
-GRAY_700 = "#374151"
-GRAY_900 = "#111827"
+# ─── TrendVision Style CSS (Dark Theme) ────────────────────────────────────
+PURPLE = "#A78BFA"
+PURPLE_LIGHT = "#2E1065"
+PURPLE_MID = "#7C3AED"
+BLUE = "#60A5FA"
+GREEN = "#34D399"
+RED = "#F87171"
+AMBER = "#FBBF24"
+DARK_BG = "#0F172A"
+DARK_CARD = "#1E293B"
+DARK_SURFACE = "#334155"
+DARK_BORDER = "#475569"
+GRAY_400 = "#94A3B8"
+GRAY_300 = "#CBD5E1"
+GRAY_200 = "#E2E8F0"
+GRAY_100 = "#F1F5F9"
+TEXT_PRIMARY = "#F1F5F9"
+TEXT_SECONDARY = "#94A3B8"
+TEXT_MUTED = "#64748B"
 
-CHART_TEMPLATE = "plotly_white"
+# Legacy aliases so existing f-strings don't break
+GRAY_50 = DARK_BG
+GRAY_500 = TEXT_SECONDARY
+GRAY_700 = GRAY_300
+GRAY_900 = TEXT_PRIMARY
+
+CHART_TEMPLATE = "plotly_dark"
 
 st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-    /* ── Force light mode globally ── */
-    .stApp, .stApp > div {{background-color: {GRAY_50} !important; color: {GRAY_900} !important; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;}}
+    /* ── Force dark mode globally ── */
+    .stApp, .stApp > div {{background-color: {DARK_BG} !important; color: {TEXT_PRIMARY} !important; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;}}
     .stApp p, .stApp span, .stApp label, .stApp div {{color: inherit;}}
     #MainMenu {{visibility: hidden;}}
     footer {{visibility: hidden;}}
-    header[data-testid="stHeader"] {{background-color: white !important; border-bottom: 1px solid {GRAY_200};}}
+    header[data-testid="stHeader"] {{background-color: {DARK_CARD} !important; border-bottom: 1px solid {DARK_BORDER};}}
 
-    /* ── Sidebar: force light backgrounds + dark text ── */
-    [data-testid="stSidebar"] {{background-color: white !important; border-right: 1px solid {GRAY_200};}}
-    [data-testid="stSidebar"], [data-testid="stSidebar"] * {{color: {GRAY_700} !important;}}
-    [data-testid="stSidebar"] .stMarkdown h2, [data-testid="stSidebar"] .stMarkdown strong {{color: {GRAY_900} !important; font-weight: 700;}}
-    [data-testid="stSidebar"] .stMarkdown p {{color: {GRAY_700} !important;}}
-    [data-testid="stSidebar"] hr {{border-color: {GRAY_200} !important;}}
-    [data-testid="stSidebar"] .stCaption, [data-testid="stSidebar"] small {{color: {GRAY_500} !important;}}
-    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {{color: {GRAY_700} !important;}}
+    /* ── Sidebar ── */
+    [data-testid="stSidebar"] {{background-color: {DARK_CARD} !important; border-right: 1px solid {DARK_BORDER};}}
+    [data-testid="stSidebar"], [data-testid="stSidebar"] * {{color: {GRAY_300} !important;}}
+    [data-testid="stSidebar"] .stMarkdown h2, [data-testid="stSidebar"] .stMarkdown strong {{color: {TEXT_PRIMARY} !important; font-weight: 700;}}
+    [data-testid="stSidebar"] .stMarkdown p {{color: {GRAY_300} !important;}}
+    [data-testid="stSidebar"] hr {{border-color: {DARK_BORDER} !important;}}
+    [data-testid="stSidebar"] .stCaption, [data-testid="stSidebar"] small {{color: {TEXT_MUTED} !important;}}
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {{color: {GRAY_300} !important;}}
 
-    /* ── Sidebar form widgets: selectbox, radio, multiselect, file uploader ── */
-    [data-testid="stSidebar"] [data-baseweb="select"] {{background-color: white !important; color: {GRAY_900} !important;}}
-    [data-testid="stSidebar"] [data-baseweb="select"] * {{color: {GRAY_900} !important;}}
+    /* ── Sidebar form widgets ── */
+    [data-testid="stSidebar"] [data-baseweb="select"] {{background-color: {DARK_SURFACE} !important; color: {TEXT_PRIMARY} !important; border-color: {DARK_BORDER} !important;}}
+    [data-testid="stSidebar"] [data-baseweb="select"] * {{color: {TEXT_PRIMARY} !important;}}
     [data-testid="stSidebar"] [data-baseweb="select"] [data-baseweb="tag"] span {{color: white !important;}}
-    [data-testid="stSidebar"] .stRadio label {{color: {GRAY_700} !important;}}
-    [data-testid="stSidebar"] .stRadio label span {{color: {GRAY_700} !important;}}
-    [data-testid="stSidebar"] .stMultiSelect label {{color: {GRAY_700} !important;}}
-    [data-testid="stSidebar"] [data-testid="stFileUploader"] {{background-color: {GRAY_50} !important; border: 1px dashed {GRAY_300} !important; border-radius: 8px; padding: 12px;}}
-    [data-testid="stSidebar"] [data-testid="stFileUploader"] * {{color: {GRAY_700} !important;}}
-    [data-testid="stSidebar"] [data-testid="stFileUploader"] button {{background-color: {PURPLE} !important; color: white !important; border: none !important; border-radius: 6px !important;}}
-    [data-testid="stSidebar"] .stAlert {{background-color: {GRAY_50} !important;}}
-    [data-testid="stSidebar"] .stAlert * {{color: {GRAY_700} !important;}}
+    [data-testid="stSidebar"] .stRadio label {{color: {GRAY_300} !important;}}
+    [data-testid="stSidebar"] .stRadio label span {{color: {GRAY_300} !important;}}
+    [data-testid="stSidebar"] .stMultiSelect label {{color: {GRAY_300} !important;}}
+    [data-testid="stSidebar"] [data-testid="stFileUploader"] {{background-color: {DARK_SURFACE} !important; border: 1px dashed {DARK_BORDER} !important; border-radius: 8px; padding: 12px;}}
+    [data-testid="stSidebar"] [data-testid="stFileUploader"] * {{color: {GRAY_300} !important;}}
+    [data-testid="stSidebar"] [data-testid="stFileUploader"] button {{background-color: {PURPLE_MID} !important; color: white !important; border: none !important; border-radius: 6px !important;}}
+    [data-testid="stSidebar"] .stAlert {{background-color: {DARK_SURFACE} !important;}}
+    [data-testid="stSidebar"] .stAlert * {{color: {GRAY_300} !important;}}
 
-    /* ── Main content text enforcement ── */
-    .stApp h1, .stApp h2, .stApp h3 {{color: {GRAY_900} !important;}}
-    .stApp p {{color: {GRAY_700};}}
-    [data-testid="stMarkdownContainer"] {{color: {GRAY_700};}}
+    /* ── Main content text ── */
+    .stApp h1, .stApp h2, .stApp h3 {{color: {TEXT_PRIMARY} !important;}}
+    .stApp p {{color: {GRAY_300};}}
+    [data-testid="stMarkdownContainer"] {{color: {GRAY_300};}}
 
     /* ── KPI Cards ── */
-    .tv-kpi {{background: white !important; border: 1px solid {GRAY_200}; border-radius: 12px; padding: 20px 24px; transition: all 0.2s ease;}}
-    .tv-kpi:hover {{border-color: {PURPLE}; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.08);}}
-    .tv-kpi-label {{font-size: 0.75rem; font-weight: 500; color: {GRAY_500} !important; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;}}
-    .tv-kpi-value {{font-size: 1.75rem; font-weight: 700; color: {GRAY_900} !important; line-height: 1.2;}}
+    .tv-kpi {{background: {DARK_CARD} !important; border: 1px solid {DARK_BORDER}; border-radius: 12px; padding: 20px 24px; transition: all 0.2s ease;}}
+    .tv-kpi:hover {{border-color: {PURPLE}; box-shadow: 0 4px 12px rgba(167, 139, 250, 0.15);}}
+    .tv-kpi-label {{font-size: 0.75rem; font-weight: 500; color: {TEXT_SECONDARY} !important; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;}}
+    .tv-kpi-value {{font-size: 1.75rem; font-weight: 700; color: {TEXT_PRIMARY} !important; line-height: 1.2;}}
     .tv-kpi-delta {{display: inline-flex; align-items: center; gap: 3px; font-size: 0.8rem; font-weight: 500; margin-top: 6px; padding: 2px 8px; border-radius: 20px;}}
-    .tv-delta-up {{color: #059669 !important; background: #D1FAE5 !important;}}
-    .tv-delta-down {{color: #DC2626 !important; background: #FEE2E2 !important;}}
+    .tv-delta-up {{color: {GREEN} !important; background: rgba(52, 211, 153, 0.15) !important;}}
+    .tv-delta-down {{color: {RED} !important; background: rgba(248, 113, 113, 0.15) !important;}}
 
     /* ── Section headers ── */
-    .tv-section {{font-size: 1.1rem; font-weight: 600; color: {GRAY_900} !important; margin: 2rem 0 1rem 0; display: flex; align-items: center; gap: 8px;}}
+    .tv-section {{font-size: 1.1rem; font-weight: 600; color: {TEXT_PRIMARY} !important; margin: 2rem 0 1rem 0; display: flex; align-items: center; gap: 8px;}}
     .tv-section-badge {{background: {PURPLE_LIGHT}; color: {PURPLE} !important; font-size: 0.7rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em;}}
 
     /* ── Alerts ── */
-    .tv-alert {{background: white !important; border: 1px solid {GRAY_200}; border-left: 4px solid {RED}; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; font-size: 0.85rem; color: {GRAY_700} !important;}}
-    .tv-alert strong {{color: {GRAY_900} !important;}}
+    .tv-alert {{background: {DARK_CARD} !important; border: 1px solid {DARK_BORDER}; border-left: 4px solid {RED}; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; font-size: 0.85rem; color: {GRAY_300} !important;}}
+    .tv-alert strong {{color: {TEXT_PRIMARY} !important;}}
     .tv-alert-warn {{border-left-color: {AMBER};}}
 
     /* ── Badges ── */
     .tv-brand-badge {{display: inline-block; background: {PURPLE_LIGHT}; color: {PURPLE} !important; font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 6px; margin-right: 6px;}}
 
     /* ── Welcome card ── */
-    .tv-welcome {{background: white !important; border: 2px dashed {GRAY_300}; border-radius: 16px; padding: 3rem 2rem; text-align: center;}}
-    .tv-welcome h3 {{color: {GRAY_900} !important; font-weight: 700;}}
-    .tv-welcome p {{color: {GRAY_500} !important;}}
+    .tv-welcome {{background: {DARK_CARD} !important; border: 2px dashed {DARK_BORDER}; border-radius: 16px; padding: 3rem 2rem; text-align: center;}}
+    .tv-welcome h3 {{color: {TEXT_PRIMARY} !important; font-weight: 700;}}
+    .tv-welcome p {{color: {TEXT_SECONDARY} !important;}}
 
     /* ── Tabs ── */
-    .stTabs [data-baseweb="tab-list"] {{gap: 0; background: white !important; border-bottom: 1px solid {GRAY_200}; padding: 0 4px;}}
-    .stTabs [data-baseweb="tab"] {{color: {GRAY_500} !important; font-weight: 500; font-size: 0.9rem; padding: 12px 20px; border-bottom: 2px solid transparent;}}
+    .stTabs [data-baseweb="tab-list"] {{gap: 0; background: {DARK_CARD} !important; border-bottom: 1px solid {DARK_BORDER}; padding: 0 4px;}}
+    .stTabs [data-baseweb="tab"] {{color: {TEXT_SECONDARY} !important; font-weight: 500; font-size: 0.9rem; padding: 12px 20px; border-bottom: 2px solid transparent;}}
     .stTabs [aria-selected="true"] {{color: {PURPLE} !important; border-bottom: 2px solid {PURPLE} !important; font-weight: 600;}}
 
     /* ── Metrics ── */
-    [data-testid="stMetric"] {{background: white !important; border: 1px solid {GRAY_200}; border-radius: 12px; padding: 16px 20px;}}
-    [data-testid="stMetricLabel"] {{color: {GRAY_500} !important; font-size: 0.8rem;}}
-    [data-testid="stMetricValue"] {{color: {GRAY_900} !important; font-weight: 700;}}
+    [data-testid="stMetric"] {{background: {DARK_CARD} !important; border: 1px solid {DARK_BORDER}; border-radius: 12px; padding: 16px 20px;}}
+    [data-testid="stMetricLabel"] {{color: {TEXT_SECONDARY} !important; font-size: 0.8rem;}}
+    [data-testid="stMetricValue"] {{color: {TEXT_PRIMARY} !important; font-weight: 700;}}
     [data-testid="stMetricDelta"] svg {{display: inline;}}
 
     /* ── DataFrame ── */
-    [data-testid="stDataFrame"] {{border: 1px solid {GRAY_200}; border-radius: 12px; overflow: hidden;}}
+    [data-testid="stDataFrame"] {{border: 1px solid {DARK_BORDER}; border-radius: 12px; overflow: hidden;}}
 
     /* ── Selectbox/multiselect dropdowns in main area ── */
-    [data-baseweb="popover"] {{background-color: white !important;}}
-    [data-baseweb="popover"] li {{color: {GRAY_900} !important;}}
-    [data-baseweb="menu"] {{background-color: white !important;}}
-    [data-baseweb="menu"] li {{color: {GRAY_900} !important;}}
-    [data-baseweb="input"] {{background-color: white !important; color: {GRAY_900} !important;}}
+    [data-baseweb="popover"] {{background-color: {DARK_CARD} !important;}}
+    [data-baseweb="popover"] li {{color: {TEXT_PRIMARY} !important;}}
+    [data-baseweb="menu"] {{background-color: {DARK_CARD} !important;}}
+    [data-baseweb="menu"] li {{color: {TEXT_PRIMARY} !important;}}
+    [data-baseweb="input"] {{background-color: {DARK_SURFACE} !important; color: {TEXT_PRIMARY} !important; border-color: {DARK_BORDER} !important;}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -333,25 +343,25 @@ def section_header(icon, title, badge=None):
     st.markdown(f'<div class="tv-section">{icon} {title} {badge_html}</div>', unsafe_allow_html=True)
 
 def chart_layout(fig, h=380):
-    """Apply TrendVision light theme to a plotly figure."""
+    """Apply TrendVision dark theme to a plotly figure."""
     fig.update_layout(
         template=CHART_TEMPLATE,
-        paper_bgcolor="white",
-        plot_bgcolor="white",
+        paper_bgcolor=DARK_CARD,
+        plot_bgcolor=DARK_CARD,
         height=h,
         margin=dict(t=40, b=30, l=50, r=20),
-        font=dict(family="Inter, sans-serif", color=GRAY_700, size=12),
-        title_font=dict(size=14, color=GRAY_900, family="Inter, sans-serif"),
-        legend=dict(font=dict(size=11)),
-        xaxis=dict(gridcolor=GRAY_100, linecolor=GRAY_200),
-        yaxis=dict(gridcolor=GRAY_100, linecolor=GRAY_200),
+        font=dict(family="Inter, sans-serif", color=TEXT_SECONDARY, size=12),
+        title_font=dict(size=14, color=TEXT_PRIMARY, family="Inter, sans-serif"),
+        legend=dict(font=dict(size=11, color=TEXT_SECONDARY)),
+        xaxis=dict(gridcolor=DARK_SURFACE, linecolor=DARK_BORDER, tickfont=dict(color=TEXT_SECONDARY)),
+        yaxis=dict(gridcolor=DARK_SURFACE, linecolor=DARK_BORDER, tickfont=dict(color=TEXT_SECONDARY)),
     )
     return fig
 
 
 # ─── Sidebar ────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown('<div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;"><div style="background:#7C3AED; color:white; font-weight:800; font-size:0.8rem; padding:6px 12px; border-radius:8px; letter-spacing:0.5px;">⚡ TrendVision</div></div>', unsafe_allow_html=True)
+    st.markdown(f'<div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;"><div style="background:{PURPLE_MID}; color:white; font-weight:800; font-size:0.8rem; padding:6px 12px; border-radius:8px; letter-spacing:0.5px;">⚡ TrendVision</div></div>', unsafe_allow_html=True)
     st.caption("Broadway Portfolio Manager")
     st.markdown("---")
 
@@ -973,7 +983,7 @@ with tab_content:
             # Build real funnel chart using plotly shapes
             funnel_items = list(funnel_raw.items())
             n_stages = len(funnel_items)
-            f_colors = [PURPLE, "#6D28D9", PURPLE_MID, BLUE]
+            f_colors = [PURPLE, PURPLE_MID, "#6D28D9", BLUE]
             # Inset fractions from each side at each boundary (creates narrowing shape)
             inset_fracs = [0.0, 0.12, 0.24, 0.34, 0.42]
 
@@ -1027,9 +1037,9 @@ with tab_content:
             fig.update_xaxes(visible=False, range=[-0.05, 1.25])
             fig.update_yaxes(visible=False, range=[-0.15, n_stages + 0.3])
             fig.update_layout(
-                paper_bgcolor="white", plot_bgcolor="white",
+                paper_bgcolor=DARK_CARD, plot_bgcolor=DARK_CARD,
                 height=420, margin=dict(t=20, b=20, l=10, r=70),
-                font=dict(family="Inter, sans-serif"),
+                font=dict(family="Inter, sans-serif", color=TEXT_PRIMARY),
             )
             st.plotly_chart(fig, use_container_width=True)
 
