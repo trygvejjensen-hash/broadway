@@ -36,36 +36,87 @@ CHART_TEMPLATE = "plotly_white"
 st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-    .stApp {{background-color: {GRAY_50}; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;}}
+
+    /* ── Force light mode globally ── */
+    .stApp, .stApp > div {{background-color: {GRAY_50} !important; color: {GRAY_900} !important; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;}}
+    .stApp p, .stApp span, .stApp label, .stApp div {{color: inherit;}}
     #MainMenu {{visibility: hidden;}}
     footer {{visibility: hidden;}}
-    header[data-testid="stHeader"] {{background-color: white; border-bottom: 1px solid {GRAY_200};}}
-    [data-testid="stSidebar"] {{background-color: white; border-right: 1px solid {GRAY_200};}}
-    [data-testid="stSidebar"] .stMarkdown h2 {{color: {GRAY_900}; font-weight: 700;}}
-    [data-testid="stSidebar"] hr {{border-color: {GRAY_200};}}
-    .tv-kpi {{background: white; border: 1px solid {GRAY_200}; border-radius: 12px; padding: 20px 24px; transition: all 0.2s ease;}}
+    header[data-testid="stHeader"] {{background-color: white !important; border-bottom: 1px solid {GRAY_200};}}
+
+    /* ── Sidebar: force light backgrounds + dark text ── */
+    [data-testid="stSidebar"] {{background-color: white !important; border-right: 1px solid {GRAY_200};}}
+    [data-testid="stSidebar"], [data-testid="stSidebar"] * {{color: {GRAY_700} !important;}}
+    [data-testid="stSidebar"] .stMarkdown h2, [data-testid="stSidebar"] .stMarkdown strong {{color: {GRAY_900} !important; font-weight: 700;}}
+    [data-testid="stSidebar"] .stMarkdown p {{color: {GRAY_700} !important;}}
+    [data-testid="stSidebar"] hr {{border-color: {GRAY_200} !important;}}
+    [data-testid="stSidebar"] .stCaption, [data-testid="stSidebar"] small {{color: {GRAY_500} !important;}}
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {{color: {GRAY_700} !important;}}
+
+    /* ── Sidebar form widgets: selectbox, radio, multiselect, file uploader ── */
+    [data-testid="stSidebar"] [data-baseweb="select"] {{background-color: white !important; color: {GRAY_900} !important;}}
+    [data-testid="stSidebar"] [data-baseweb="select"] * {{color: {GRAY_900} !important;}}
+    [data-testid="stSidebar"] [data-baseweb="select"] [data-baseweb="tag"] span {{color: white !important;}}
+    [data-testid="stSidebar"] .stRadio label {{color: {GRAY_700} !important;}}
+    [data-testid="stSidebar"] .stRadio label span {{color: {GRAY_700} !important;}}
+    [data-testid="stSidebar"] .stMultiSelect label {{color: {GRAY_700} !important;}}
+    [data-testid="stSidebar"] [data-testid="stFileUploader"] {{background-color: {GRAY_50} !important; border: 1px dashed {GRAY_300} !important; border-radius: 8px; padding: 12px;}}
+    [data-testid="stSidebar"] [data-testid="stFileUploader"] * {{color: {GRAY_700} !important;}}
+    [data-testid="stSidebar"] [data-testid="stFileUploader"] button {{background-color: {PURPLE} !important; color: white !important; border: none !important; border-radius: 6px !important;}}
+    [data-testid="stSidebar"] .stAlert {{background-color: {GRAY_50} !important;}}
+    [data-testid="stSidebar"] .stAlert * {{color: {GRAY_700} !important;}}
+
+    /* ── Main content text enforcement ── */
+    .stApp h1, .stApp h2, .stApp h3 {{color: {GRAY_900} !important;}}
+    .stApp p {{color: {GRAY_700};}}
+    [data-testid="stMarkdownContainer"] {{color: {GRAY_700};}}
+
+    /* ── KPI Cards ── */
+    .tv-kpi {{background: white !important; border: 1px solid {GRAY_200}; border-radius: 12px; padding: 20px 24px; transition: all 0.2s ease;}}
     .tv-kpi:hover {{border-color: {PURPLE}; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.08);}}
-    .tv-kpi-label {{font-size: 0.75rem; font-weight: 500; color: {GRAY_500}; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;}}
-    .tv-kpi-value {{font-size: 1.75rem; font-weight: 700; color: {GRAY_900}; line-height: 1.2;}}
+    .tv-kpi-label {{font-size: 0.75rem; font-weight: 500; color: {GRAY_500} !important; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;}}
+    .tv-kpi-value {{font-size: 1.75rem; font-weight: 700; color: {GRAY_900} !important; line-height: 1.2;}}
     .tv-kpi-delta {{display: inline-flex; align-items: center; gap: 3px; font-size: 0.8rem; font-weight: 500; margin-top: 6px; padding: 2px 8px; border-radius: 20px;}}
-    .tv-delta-up {{color: #059669; background: #D1FAE5;}}
-    .tv-delta-down {{color: #DC2626; background: #FEE2E2;}}
-    .tv-section {{font-size: 1.1rem; font-weight: 600; color: {GRAY_900}; margin: 2rem 0 1rem 0; display: flex; align-items: center; gap: 8px;}}
-    .tv-section-badge {{background: {PURPLE_LIGHT}; color: {PURPLE}; font-size: 0.7rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em;}}
-    .tv-alert {{background: white; border: 1px solid {GRAY_200}; border-left: 4px solid {RED}; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; font-size: 0.85rem; color: {GRAY_700};}}
-    .tv-alert strong {{color: {GRAY_900};}}
+    .tv-delta-up {{color: #059669 !important; background: #D1FAE5 !important;}}
+    .tv-delta-down {{color: #DC2626 !important; background: #FEE2E2 !important;}}
+
+    /* ── Section headers ── */
+    .tv-section {{font-size: 1.1rem; font-weight: 600; color: {GRAY_900} !important; margin: 2rem 0 1rem 0; display: flex; align-items: center; gap: 8px;}}
+    .tv-section-badge {{background: {PURPLE_LIGHT}; color: {PURPLE} !important; font-size: 0.7rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em;}}
+
+    /* ── Alerts ── */
+    .tv-alert {{background: white !important; border: 1px solid {GRAY_200}; border-left: 4px solid {RED}; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; font-size: 0.85rem; color: {GRAY_700} !important;}}
+    .tv-alert strong {{color: {GRAY_900} !important;}}
     .tv-alert-warn {{border-left-color: {AMBER};}}
-    .tv-brand-badge {{display: inline-block; background: {PURPLE_LIGHT}; color: {PURPLE}; font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 6px; margin-right: 6px;}}
-    .tv-welcome {{background: white; border: 2px dashed {GRAY_300}; border-radius: 16px; padding: 3rem 2rem; text-align: center;}}
-    .tv-welcome h3 {{color: {GRAY_900}; font-weight: 700;}}
-    .tv-welcome p {{color: {GRAY_500};}}
-    .stTabs [data-baseweb="tab-list"] {{gap: 0; background: white; border-bottom: 1px solid {GRAY_200}; padding: 0 4px;}}
-    .stTabs [data-baseweb="tab"] {{color: {GRAY_500}; font-weight: 500; font-size: 0.9rem; padding: 12px 20px; border-bottom: 2px solid transparent;}}
+
+    /* ── Badges ── */
+    .tv-brand-badge {{display: inline-block; background: {PURPLE_LIGHT}; color: {PURPLE} !important; font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 6px; margin-right: 6px;}}
+
+    /* ── Welcome card ── */
+    .tv-welcome {{background: white !important; border: 2px dashed {GRAY_300}; border-radius: 16px; padding: 3rem 2rem; text-align: center;}}
+    .tv-welcome h3 {{color: {GRAY_900} !important; font-weight: 700;}}
+    .tv-welcome p {{color: {GRAY_500} !important;}}
+
+    /* ── Tabs ── */
+    .stTabs [data-baseweb="tab-list"] {{gap: 0; background: white !important; border-bottom: 1px solid {GRAY_200}; padding: 0 4px;}}
+    .stTabs [data-baseweb="tab"] {{color: {GRAY_500} !important; font-weight: 500; font-size: 0.9rem; padding: 12px 20px; border-bottom: 2px solid transparent;}}
     .stTabs [aria-selected="true"] {{color: {PURPLE} !important; border-bottom: 2px solid {PURPLE} !important; font-weight: 600;}}
-    [data-testid="stMetric"] {{background: white; border: 1px solid {GRAY_200}; border-radius: 12px; padding: 16px 20px;}}
-    [data-testid="stMetricLabel"] {{color: {GRAY_500}; font-size: 0.8rem;}}
-    [data-testid="stMetricValue"] {{color: {GRAY_900}; font-weight: 700;}}
+
+    /* ── Metrics ── */
+    [data-testid="stMetric"] {{background: white !important; border: 1px solid {GRAY_200}; border-radius: 12px; padding: 16px 20px;}}
+    [data-testid="stMetricLabel"] {{color: {GRAY_500} !important; font-size: 0.8rem;}}
+    [data-testid="stMetricValue"] {{color: {GRAY_900} !important; font-weight: 700;}}
+    [data-testid="stMetricDelta"] svg {{display: inline;}}
+
+    /* ── DataFrame ── */
     [data-testid="stDataFrame"] {{border: 1px solid {GRAY_200}; border-radius: 12px; overflow: hidden;}}
+
+    /* ── Selectbox/multiselect dropdowns in main area ── */
+    [data-baseweb="popover"] {{background-color: white !important;}}
+    [data-baseweb="popover"] li {{color: {GRAY_900} !important;}}
+    [data-baseweb="menu"] {{background-color: white !important;}}
+    [data-baseweb="menu"] li {{color: {GRAY_900} !important;}}
+    [data-baseweb="input"] {{background-color: white !important; color: {GRAY_900} !important;}}
 </style>
 """, unsafe_allow_html=True)
 
